@@ -178,14 +178,22 @@ console.log("Products by brand name ", brands);
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
+var brandsHighToLow=brands;
+for(var key in brandsHighToLow) {
+  brandsHighToLow[key]=sortPrice(brandsHighToLow[key]).reverse();
+}
+
+console.log("Products sorted by prices from highest to lowest for each brand ",brandsHighToLow);
 
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
-
-
-
+var brandsOldToRec=brands;
+for(var key in brandsOldToRec) {
+  brandsOldToRec[key]=sortDate(brandsOldToRec[key]).reverse();
+}
+console.log("Products sorted by dates from old to recent for each brand ",brandsOldToRec);
 
 
 /**
