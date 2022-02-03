@@ -127,11 +127,11 @@ console.log("List of products between 50€ and 100€ : ", priceListFilter);
 // 🎯 TODO: Average price
 // 1. Determine the average price of the marketplace
 // 2. Log the average
-var sumPrice=0;
-marketplace.forEach(element =>{
-  sumPrice+=element.price;
+var sumPrice = 0;
+marketplace.forEach(element => {
+  sumPrice += element.price;
 })
-var avgPriceMarket=sumPrice/marketplace.length;
+var avgPriceMarket = sumPrice / marketplace.length;
 console.log("Average price of the market place ", avgPriceMarket);
 
 
@@ -159,6 +159,20 @@ console.log("Average price of the market place ", avgPriceMarket);
 //
 // 2. Log the variable
 // 3. Log the number of products by brands
+const brands = {};
+//products=[];
+marketplace.forEach(element => {
+  var products = [];
+
+  if (brands.hasOwnProperty(element.brand) == false) {
+    marketplace.forEach(element => {
+      products.push(element);
+    });
+    brands[element.brand] = products;
+  };
+});
+
+console.log("Products by brand name ", brands);
 
 
 // 🎯 TODO: Sort by price for each brand
