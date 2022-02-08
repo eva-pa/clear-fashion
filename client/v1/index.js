@@ -178,22 +178,22 @@ console.log("Products by brand name ", brands);
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
-var brandsHighToLow=brands;
-for(var key in brandsHighToLow) {
-  brandsHighToLow[key]=sortPrice(brandsHighToLow[key]).reverse();
+var brandsHighToLow = brands;
+for (var key in brandsHighToLow) {
+  brandsHighToLow[key] = sortPrice(brandsHighToLow[key]).reverse();
 }
 
-console.log("Products sorted by prices from highest to lowest for each brand ",brandsHighToLow);
+console.log("Products sorted by prices from highest to lowest for each brand ", brandsHighToLow);
 
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
-var brandsOldToRec=brands;
-for(var key in brandsOldToRec) {
-  brandsOldToRec[key]=sortDate(brandsOldToRec[key]).reverse();
+var brandsOldToRec = brands;
+for (var key in brandsOldToRec) {
+  brandsOldToRec[key] = sortDate(brandsOldToRec[key]).reverse();
 }
-console.log("Products sorted by dates from old to recent for each brand ",brandsOldToRec);
+console.log("Products sorted by dates from old to recent for each brand ", brandsOldToRec);
 
 
 /**
@@ -207,6 +207,23 @@ console.log("Products sorted by dates from old to recent for each brand ",brands
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
+var p90 = {};
+for (var key in brands) {
+  console.log("key", key);
+  var products = brands[key];
+  var percentile = Math.round(products.length * 0.9);
+  console.log("PERCENTILE", percentile);
+  //sorting the products from low price to high price
+  products = sortPrice(products);
+  console.log(products)
+  console.log("PRODUIT DU PERCENTILE", products[percentile]);
+  p90[key] = products[percentile].price;
+  console.log("verif", p90[key]);
+};
+console.log(sortPrice(brands['loom']));
+for (var key in p90) {
+  console.log("Brand :", key, "percentile", p90[key]);
+}
 
 
 
@@ -287,16 +304,48 @@ const COTELE_PARIS = [
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
+var reasonable = true;
+for (let i = 0; i < COTELE_PARIS.length; i++) {
+  if (COTELE_PARIS[0].price < 110) {
+    reasonable=false;
+    i=COTELE_PARIS.length;
+  };
+};
 
+if(reasonable==true){
+  console.log("coteleparis is a reasonable price shop");  
+}
+else{
+  console.log("coteleparis is not a reasonable price shop");
 
+}
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
-
+var prodUuid=[];
+for(let i=0;i<COTELE_PARIS.length;i++)
+{
+  if(COTELE_PARIS[i].uuid=='b56c6d88-749a-5b4c-b571-e5b5c6483131')
+  {
+    prodUuid=COTELE_PARIS[i];
+    i=COTELE_PARIS.length;
+  }
+}
+console.log("Product with the uuid b56c6d88-749a-5b4c-b571-e5b5c6483131 ");
+console.log(prodUuid);
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the new list of product
+var prodNew=COTELE_PARIS;
+for(let i=0;i<prodNew.length;i++)
+{
+  if(prodNew[i].uuid=='b56c6d88-749a-5b4c-b571-e5b5c6483131')
+  {
+    prodNew.splice(i);
+  }
+}
+console.log("New list without the uuid ", prodNew);
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -313,6 +362,8 @@ jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
 // 2. What do you notice?
+console.log("Blue Jacket ", blueJacket);
+console.log("Jacket ", jacket);
 
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
