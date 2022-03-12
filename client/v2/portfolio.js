@@ -4,22 +4,29 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+let currentBrand = 'option brand';
+//let currentBrands =[];
+//let productsExtract = fetchProducts(currentPagination, 139);
+
 
 // instantiate the selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const selectBrand = document.querySelector('#brand-select'); //test feature 2
+
 
 /**
  * Set global value
  * @param {Array} result - products to display
  * @param {Object} meta - pagination meta info
  */
-const setCurrentProducts = ({result, meta}) => {
+const setCurrentProducts = ({ result, meta }) => {
   currentProducts = result;
   currentPagination = meta;
 };
+
 
 /**
  * Fetch products from api
@@ -36,6 +43,26 @@ const fetchProducts = async (page = 1, size = 12) => {
 
     if (body.success !== true) {
       console.error(body);
+      return { currentProducts, currentPagination };
+    }
+
+    return body.data;
+  } catch (error) {
+    console.error(error);
+    return { currentProducts, currentPagination };
+  }
+};
+
+/** 
+const fetchProductsByBrand = async (page = 1, size = 12,brand='loom') => {
+  try {
+    const response = await fetch(
+      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`
+    );
+    const body = await response.json();
+
+    if (body.success !== true) {
+      console.error(body);
       return {currentProducts, currentPagination};
     }
 
@@ -44,8 +71,37 @@ const fetchProducts = async (page = 1, size = 12) => {
     console.error(error);
     return {currentProducts, currentPagination};
   }
-};
+}; */
 
+var brands=[]
+/**
+* Fetch brands  from api
+* @param  {Number}  [page=1] - current page to fetch
+* @return {Array}
+*/
+const fetchBrands = async (page = 1, size = 139) => {
+  console.log("Début du test")
+  try {
+    const response = await fetch(`https://clear-fashion-api.vercel.app?page=${page}&size=${size}`);
+
+    const body = await response.json();
+    if (body.success !== true) {
+      console.error(body);
+      return { currentProducts, currentPagination };
+    }
+    // Extract the brands and put them in a list with function extract brand
+    console.log("body.data.result",body.data.result);
+    brands = ExtractBrands(body.data.result);
+    console.log('brands extraction test',brands);
+    console.log('fin du test');
+    return brands;
+    // return body.data;
+  } catch (error) {
+    console.error(error);
+    return { currentProducts, currentPagination };
+  }
+};
+console.log(fetchBrands());
 /**
  * Render list of products
  * @param  {Array} products
@@ -76,9 +132,9 @@ const renderProducts = products => {
  * @param  {Object} pagination
  */
 const renderPagination = pagination => {
-  const {currentPage, pageCount} = pagination;
+  const { currentPage, pageCount } = pagination;
   const options = Array.from(
-    {'length': pageCount},
+    { 'length': pageCount },
     (value, index) => `<option value="${index + 1}">${index + 1}</option>`
   ).join('');
 
@@ -91,8 +147,7 @@ const renderPagination = pagination => {
  * @param  {Object} pagination
  */
 const renderIndicators = pagination => {
-  const {count} = pagination;
-
+  const { count } = pagination;
   spanNbProducts.innerHTML = count;
 };
 
@@ -100,8 +155,97 @@ const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
+  brands= fetchBrands();
+  renderBrand(brands); // je l'ai ajouté mais faire un const brands ou get brands tas capté
+  // a ajouter quand bon : renderBrand(brands);
 };
 
+// function to have distinct brand names in array 
+
+/*
+function ExtractBrands(productsList) {
+  var brandsList = [];
+  for (var i = 0; i < productsList.length; i++) {
+    var isInList = false;
+    console.log("Avant rentrer dans la boucle");
+    for (var j = 0; j < brandsList.length; j++) {
+      console.log("Rentré dans la boucle");
+      if (productsList.brand == brandsList[j]) {
+        isInList = true;
+        j = brandsList.length;
+      };
+      if (isInList == false) {
+        brandsList.push(productsList.brand);
+      };
+
+    }
+  }
+  console.log("Extract brand function test brandlist:", brandsList);
+  return brandsList;
+}; 
+*/
+function ExtractBrands(productsList){
+  
+  var tempBrands=[];
+  //Put brands in list, list with repetitions 
+  for(var i=0;i<productsList.length;i++)
+  {
+    tempBrands.push(productsList[i].brand);
+  }
+  console.log("tempbrands sans filtre",tempBrands);
+  var brandsList= tempBrands.filter(function(ele,pos){
+    return tempBrands.indexOf(ele)==pos;
+  })
+  return brandsList;
+}
+
+//let brandNamesList = ExtractBrands(productsExtract);
+// render brand select
+/*
+const renderBrand = brandNamesList => {
+  options = [];
+  var line = '';
+ 
+  for (i = 0; i < brandNamesList.length; i++) {
+    line += '`<option value="${' + brandNames[i] + '}">${' + brandNames[i] + '}</option>`';
+  };
+  selectBrand.innerHTML = options;
+};
+*/
+
+/**
+ * Render page selector
+ * @param  {Array} brands
+ */
+brands = fetchBrands();
+console.log("BRANDS ",brands)
+const renderBrand = brands => {
+  console.log("RENDER BRAND",brands);
+
+  var optionsLst = [];
+  var options = "";
+  var txt = "";
+  var singleBrand="";
+  console.log("options test eva brands render brands", brands);
+  console.log("2!!!");
+  //txt='"<option value="' + brands[i] + '">' + brands[i] + '</option>'
+  txt = `<option value="select">Select</option>` ;
+  console.log("TXT!!!!", txt);
+  console.log('brands length', brands.length);
+  for (var i = 0; i < brands.length; i++) {
+    // txt = '"<option value="' + brands[i] + '">' + brands[i] + '</option>';
+    singleBrand = brands[i];
+    txt = `<option value="${singleBrand}">${singleBrand}</option>`;
+    console.log("TXT 2 BOUCLE!!", txt);
+    optionsLst.push(txt);
+  }
+  console.log("TXT 3", txt);
+  options = optionsLst.join('');
+  console.log("options test eva ",options);
+  selectBrand.innerHTML = options;
+  selectBrand.selectedIndex = brands.indexOf(currentBrand) + 1;
+  
+};
 /**
  * Declaration of all Listeners
  */
@@ -113,12 +257,63 @@ selectShow.addEventListener('change', async (event) => {
   const products = await fetchProducts(currentPagination.currentPage, parseInt(event.target.value));
 
   setCurrentProducts(products);
+
   render(currentProducts, currentPagination);
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
   const products = await fetchProducts();
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+// Feature 1:
+selectPage.addEventListener('change', async (event) => {
+  const products = await fetchProducts(parseInt(event.target.value), currentProducts.length);
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
+
+// Feature 2:
+/*
+selectBrand.addEventListener('change', async (event) => {
+  productsBrand = []
+  products.forEach(element => {
+    if (element.brand == event.target.value) {
+      productsBrand.push(element);
+    };
+    setCurrentProducts(productsBrand);
+    setCurrentBrands(productsBrand)
+    render(currentProducts, currentPagination, currentBrands)
+  });
+
+});
+*/
+
+selectBrand.addEventListener('change', async (event) => {
+  currentProducts = [];
+  
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  currentBrand = event.target.value;
+  if (currentBrand != 'option brand') {
+    //currentProducts = ExtractBrands(products.result);
+    //const BrandToShow= ExtractBrands(products.result);
+    for(var i=0;i<products.result.length;i++){
+      if(products.result[i].brand==currentBrand){
+        currentProducts.push(products.result[i]);
+      };
+    };
+    setCurrentProducts(currentProducts);
+    render(currentProducts, currentPagination);
+  }
+  else {
+    currentProducts=products.result;
+    setCurrentProducts(currentProducts);
+    render(currentProducts, currentPagination);
+  };
+
+});
+
+//Feature 3: Filter by recent products
+

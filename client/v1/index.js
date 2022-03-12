@@ -372,10 +372,10 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
+//const jacket=blueJacket;
+//jacket.favorite=true;
 
-
-
-
+//console.log("Jacket ", jacket);
 
 /**
  * 🎬
@@ -386,3 +386,6 @@ blueJacket = {
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
 // 2. log the localStorage
+
+
+//localStorage
