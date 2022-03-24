@@ -21,7 +21,8 @@ const parse = data => {
           .find('.regular-price')
           .text()
       );
-      return {name, price};
+      // added brand bc products were mixed up in the mongo db
+      return {"brand":"MONTLIMART",name, price};
     })
     .get();
 };

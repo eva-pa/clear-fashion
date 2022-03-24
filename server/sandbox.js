@@ -1,5 +1,5 @@
 /* eslint-disable no-console, no-process-exit */
-const montlimardbrand= require('./sources/montlimardbrand');
+const dedicatedbrand = require('./sources/dedicatedbrand');
 
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
   try {
