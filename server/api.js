@@ -42,7 +42,7 @@ app.get('/products/search', async (request, response) => {
   };
   if (price == undefined && brand != undefined && limit == undefined) {
     //db.findByBrand(brand).then(x => response.send(x));
-    db.aggregate([{ 'brand': brand }, { '$sort': { "price": 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }]}},{'$sort': { "price": 1 } }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price == undefined && brand != undefined && limit != undefined) {
     db.aggregate([{ "brand": brand }, { "$limit": parseInt(limit) }]).then(x => response.send({'limit':parseInt(limit),total:'x.length','result':x}));
