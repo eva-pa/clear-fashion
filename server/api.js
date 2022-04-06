@@ -19,20 +19,10 @@ app.use(helmet());
 app.options('*', cors());
 
 app.get('/', (request, response) => {
-  response.send({'ack': true});
+  response.send({ 'ack': true });
 });
+app.get('/products/search', async (request, response) => {
 
-// Fetch products by id:
-app.get('/products/:id', async(request,response)=>{
-
-db.findById(request.params.id).then(x => response.send(x));
-
-});
-// example to run on insomnia : "http://localhost:8092/products/6237a43788e0c3ba1ad90593 " GET
-
-// Search for specific products : limit,brand, price
-app.get('/products/search',async(request,response)=>{
-  
   let price = request.query.price;
   let brand = request.query.brand;
   let limit = request.query.limit;
@@ -40,51 +30,78 @@ app.get('/products/search',async(request,response)=>{
   // IFs
   // I am not going to create a function inside db/index.js for each case
   // so I will just the basic find function or the aggregate function
-  if(price==undefined && brand == undefined && limit ==undefined ){
+  if (price == undefined && brand == undefined && limit == undefined) {
     // Just return all products.
-    db.find().then(x => response.send(x));
-  };
-  if(price==undefined && brand == undefined && limit == defined){
-    db.aggregate([{'$limit':parseInt(limit)}]).then(x => response.send(x));
-  };
-  if(price==undefined && brand == defined && limit == undefined){
-    db.findByBrand(brand).then(x => response.send(x) );
-  };
-  if(price==undefined && brand == defined && limit == defined){
-    db.find({"brand":brand,"$limit":parseInt(limit)});
-  };
-  if(price==defined && brand == undefined && limit == undefined){
+    //db.find().then(x => response.send(x));
+    db.aggregate([{ '$sort': { 'price': 1 } }]).then(x => response.send(x));
 
   };
-  if(price==defined && brand == undefined && limit == defined){
-
+  if (price == undefined && brand == undefined && limit != undefined) {
+    //db.aggregate([{'$limit': parseInt(limit) }]).then(x => response.send(x));
+    db.aggregate([{ '$limit': parseInt(limit) }]).then(x => response.send({ 'limit': parseInt(limit), 'total': x.length, 'result': x }));
   };
-  if(price==defined && brand == defined && limit == undefined){
-
+  if (price == undefined && brand != undefined && limit == undefined) {
+    //db.findByBrand(brand).then(x => response.send(x));
+    db.aggregate([{ 'brand': brand }, { '$sort': { "price": 1 } }]).then(x => response.send({'total':x.length,'result': x}));
   };
-  if(price==defined && brand == defined && limit == defined){
-
+  if (price == undefined && brand != undefined && limit != undefined) {
+    db.aggregate([{ "brand": brand }, { "$limit": parseInt(limit) }]).then(x => response.send({'limit':parseInt(limit),total:'x.length','result':x}));
   };
-  
-
-
-
+  if (price != undefined && brand == undefined && limit == undefined) {
+    //db.findLessPrice(parseFloat(price)).then(x => response.send(x));
+    db.aggregate([{ "price": parseFloat(price) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+  };
+  if (price != undefined && brand == undefined && limit != undefined) {
+    db.aggregate([{ "price": parseFloat(price) }, { "$limit": parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send(x));
+  };
+  if (price != undefined && brand != undefined && limit == undefined) {
+    //db.findByBrand(brand).then(x => response.send(x));
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}))
+  };
+  if (price != undefined && brand != undefined && limit != undefined) {
+    console.log('enter');
+    //db.aggregate([{ "brand": brand }, { "price": parseFloat(price) }, { "$limit": parseInt(limit) }]);
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}))
+    console.log('eva');
+  };
 }
 );
+// Fetch products by id:
+app.get('/products/:id', async (request, response) => {
+
+  db.findById(request.params.id).then(x => response.send(x));
+
+});
+// example to run on insomnia : "http://localhost:8092/products/6237a43788e0c3ba1ad90593 " GET
+
+// Search for specific products : limit,brand, price
+
 
 
 // Find all products:
-app.get('/products', async(request,response)=>{
+app.get('/products', async (request, response) => {
 
   db.find().then(x => response.send(x));
-  
-  });
+
+});
 
 
 
 
 console.log("TEST")
-db.find().then(response => console.log(response));
+//db.find({"brand":"MONTLIMART","$limit":10}).then(response=>console.log(response));
+//db.aggregate([{"brand":"MONTLIMART","$limit":10}]).then(response => console.log(response))
+//db.find().then(response => console.log(response));
+//db.aggregate([{'$limit':10},{"$match":{"brand":"MONLIMART"}}]).then(response => console.log(response));
+//db.aggregate([{$match:{"brand":"MONTLIMART"},{$limit:10}}]).then(response => console.log(response));
+//db.aggregate([{'$limit':10},{'brand':'MONTLIMART'}]).then(response=>console.log(response));
+
+//db.aggregate([{'$match':{brand:"MONTLIMART"},"$lte":{"price":100},"$limit":5}]).then(response => console.log(response))
+//db.aggregate([{ "brand": "MONTLIMART" }, { "price": parseFloat(135) }, { "$limit": parseInt(12) }]).then(response => console.log(response));
+
+//db.aggregate([{'$match':{'$and':[{'brand':brand},{'price':{'$lte':parseFloat(price)}}]}},{'$limit':parseInt(limit)},{'$sort':{'price':1}}])
+console.log('fin')
+
 
 app.listen(PORT);
 
