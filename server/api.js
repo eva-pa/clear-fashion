@@ -49,10 +49,10 @@ app.get('/products/search', async (request, response) => {
   };
   if (price != undefined && brand == undefined && limit == undefined) {
     //db.findLessPrice(parseFloat(price)).then(x => response.send(x));
-    db.aggregate([{ "price": parseFloat(price) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+    db.aggregate([{ '$match': { '$and': [{ 'price':{'$lte':parseFloat(price)} }]}}, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price != undefined && brand == undefined && limit != undefined) {
-    db.aggregate([{ "price": parseFloat(price) }, { "$limit": parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),total:'x.length','result':x}));
+    db.aggregate([{ '$match': { '$and': [{ 'price':{'$lte':parseFloat(price)} }]}}, { "$limit": parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
   };
   if (price != undefined && brand != undefined && limit == undefined) {
     //db.findByBrand(brand).then(x => response.send(x));
