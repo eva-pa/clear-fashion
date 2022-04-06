@@ -33,7 +33,7 @@ app.get('/products/search', async (request, response) => {
   if (price == undefined && brand == undefined && limit == undefined) {
     // Just return all products.
     //db.find().then(x => response.send(x));
-    db.aggregate([{ '$sort': { 'price': 1 } }]).then(x => response.send(x));
+    db.aggregate([{ '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
 
   };
   if (price == undefined && brand == undefined && limit != undefined) {
@@ -52,7 +52,7 @@ app.get('/products/search', async (request, response) => {
     db.aggregate([{ "price": parseFloat(price) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price != undefined && brand == undefined && limit != undefined) {
-    db.aggregate([{ "price": parseFloat(price) }, { "$limit": parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send(x));
+    db.aggregate([{ "price": parseFloat(price) }, { "$limit": parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),total:'x.length','result':x}));
   };
   if (price != undefined && brand != undefined && limit == undefined) {
     //db.findByBrand(brand).then(x => response.send(x));
@@ -61,7 +61,7 @@ app.get('/products/search', async (request, response) => {
   if (price != undefined && brand != undefined && limit != undefined) {
     console.log('enter');
     //db.aggregate([{ "brand": brand }, { "price": parseFloat(price) }, { "$limit": parseInt(limit) }]);
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}))
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),total:'x.length','result':x}))
     console.log('eva');
   };
 }
