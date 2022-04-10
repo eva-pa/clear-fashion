@@ -1,10 +1,15 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
 
+
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
-let sortingDefault = 1;
+let brand ; // for the fetch products function
+let price ; // for the fetch products function
+let limit =12 ;
+let sorting ; // for the fetch products function
+//let sortingDefault = 1;
 //let currentBrand = 'option brand';
 //let currentBrands =[];
 //let productsExtract = fetchProducts(currentPagination, 139);
@@ -17,7 +22,7 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select'); //test feature 2
 const lessThanPrice = document.querySelector('#submitPrice') // price entered by user, search for items that cost less than this price
-const sorting = document.querySelector('#sort-select')
+const selectSorting = document.querySelector('#sort-select')
 
 /**
  * Set global value
@@ -29,46 +34,47 @@ const setCurrentProducts = ({ result, meta }) => {
   currentPagination = meta;
 };
 
-const queryFormation = async(price, brand, limit) => {
+var queryFormation = (limit,price,brand,sorting) => {
   let query = `https://server-fawn-mu.vercel.app/products/search?`;
-  if(price != undefined ){
+  if (price != undefined) {
     query = `${query}&price=${price}`;
   }
-  if(brand != undefined){
+  if (brand != undefined) {
     query = `${query}&brand=${brand}`;
   }
-  if(limit != undefined){
+  if (limit != undefined) {
     query = `${query}&limit=${limit}`;
   }
+  else{console.log('LIMIT DEFINED');};
+  if (sorting != undefined) {
+    query = `${query}&sorting=${sorting}`;
+  }
+  console.log('LA QUERYYYYY',query)
   return query;
-}
- console.log('TEST QUERY FORMATION',queryFormation(135,'MONTLIMART',12));
+};
+
 /**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (price, brand, limit = totalProducts) => {
-  
-  
+const fetchProducts = async (limit,price,brand,sorting) => {
+
+  let query = queryFormation(limit, price, brand, sorting);
   try {
-    const response = await fetch(
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
-    );
+    const response = await fetch(query);
     const body = await response.json();
-
-    if (body.success !== true) {
-      console.error(body);
-      return { currentProducts, currentPagination };
-    }
-
-    return body.data;
+    return body.result;
   } catch (error) {
     console.error(error);
     return { currentProducts, currentPagination };
   }
 };
+console.log('premiere boucle');
+ let products12 = fetchProducts(limit,135,brand,sorting);
+ console.log('PRODUCTS',products12);
+ console.log('fin boucle');
 
 /** 
 const fetchProductsByBrand = async (page = 1, size = 12,brand='loom') => {
@@ -90,12 +96,13 @@ const fetchProductsByBrand = async (page = 1, size = 12,brand='loom') => {
   }
 }; */
 
-var brands=[]
+//var brands = []
 /**
 * Fetch brands  from api
 * @param  {Number}  [page=1] - current page to fetch
 * @return {Array}
 */
+/*
 const fetchBrands = async (page = 1, size = 139) => {
   console.log("Début du test")
   try {
@@ -107,9 +114,9 @@ const fetchBrands = async (page = 1, size = 139) => {
       return { currentProducts, currentPagination };
     }
     // Extract the brands and put them in a list with function extract brand
-    console.log("body.data.result",body.data.result);
+    console.log("body.data.result", body.data.result);
     brands = ExtractBrands(body.data.result);
-    console.log('brands extraction test',brands);
+    console.log('brands extraction test', brands);
     console.log('fin du test');
     return brands;
     // return body.data;
@@ -118,7 +125,8 @@ const fetchBrands = async (page = 1, size = 139) => {
     return { currentProducts, currentPagination };
   }
 };
-console.log(fetchBrands());
+*/
+// console.log(fetchBrands());
 /**
  * Render list of products
  * @param  {Array} products
@@ -172,9 +180,8 @@ const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
-  brands= fetchBrands();
-  renderBrand(brands); // je l'ai ajouté mais faire un const brands ou get brands tas capté
-  // a ajouter quand bon : renderBrand(brands);
+ // brands = fetchBrands();
+  //renderBrand(brands); 
 };
 
 // function to have distinct brand names in array 
@@ -201,20 +208,23 @@ function ExtractBrands(productsList) {
   return brandsList;
 }; 
 */
-function ExtractBrands(productsList){
-  
-  var tempBrands=[];
+
+/*
+function ExtractBrands(productsList) {
+
+  var tempBrands = [];
   //Put brands in list, list with repetitions 
-  for(var i=0;i<productsList.length;i++)
-  {
+  for (var i = 0; i < productsList.length; i++) {
     tempBrands.push(productsList[i].brand);
   }
-  console.log("tempbrands sans filtre",tempBrands);
-  var brandsList= tempBrands.filter(function(ele,pos){
-    return tempBrands.indexOf(ele)==pos;
+  console.log("tempbrands sans filtre", tempBrands);
+  var brandsList = tempBrands.filter(function (ele, pos) {
+    return tempBrands.indexOf(ele) == pos;
   })
   return brandsList;
 }
+
+*/
 
 //let brandNamesList = ExtractBrands(productsExtract);
 // render brand select
@@ -234,19 +244,20 @@ const renderBrand = brandNamesList => {
  * Render page selector
  * @param  {Array} brands
  */
+/*
 brands = fetchBrands();
-console.log("BRANDS ",brands)
+console.log("BRANDS ", brands)
 const renderBrand = brands => {
-  console.log("RENDER BRAND",brands);
+  console.log("RENDER BRAND", brands);
 
   var optionsLst = [];
   var options = "";
   var txt = "";
-  var singleBrand="";
+  var singleBrand = "";
   console.log("options test eva brands render brands", brands);
   console.log("2!!!");
   //txt='"<option value="' + brands[i] + '">' + brands[i] + '</option>'
-  txt = `<option value="select">Select</option>` ;
+  txt = `<option value="select">Select</option>`;
   console.log("TXT!!!!", txt);
   console.log('brands length', brands.length);
   for (var i = 0; i < brands.length; i++) {
@@ -258,11 +269,13 @@ const renderBrand = brands => {
   }
   console.log("TXT 3", txt);
   options = optionsLst.join('');
-  console.log("options test eva ",options);
+  console.log("options test eva ", options);
   selectBrand.innerHTML = options;
   selectBrand.selectedIndex = brands.indexOf(currentBrand) + 1;
-  
+
 };
+*/
+
 /**
  * Declaration of all Listeners
  */
@@ -308,16 +321,17 @@ selectBrand.addEventListener('change', async (event) => {
 });
 */
 
+/*
 selectBrand.addEventListener('change', async (event) => {
   currentProducts = [];
-  
+
   const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
   currentBrand = event.target.value;
   if (currentBrand != 'option brand') {
     //currentProducts = ExtractBrands(products.result);
     //const BrandToShow= ExtractBrands(products.result);
-    for(var i=0;i<products.result.length;i++){
-      if(products.result[i].brand==currentBrand){
+    for (var i = 0; i < products.result.length; i++) {
+      if (products.result[i].brand == currentBrand) {
         currentProducts.push(products.result[i]);
       };
     };
@@ -325,12 +339,13 @@ selectBrand.addEventListener('change', async (event) => {
     render(currentProducts, currentPagination);
   }
   else {
-    currentProducts=products.result;
+    currentProducts = products.result;
     setCurrentProducts(currentProducts);
     render(currentProducts, currentPagination);
   };
 
 });
+*/
 
 //Feature 3: Filter by recent products
 
