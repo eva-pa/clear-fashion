@@ -4,6 +4,7 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+let sortingDefault = 1;
 //let currentBrand = 'option brand';
 //let currentBrands =[];
 //let productsExtract = fetchProducts(currentPagination, 139);
@@ -15,7 +16,7 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select'); //test feature 2
-const lessThanPrice = document.querySelector('#submitPrice')
+const lessThanPrice = document.querySelector('#submitPrice') // price entered by user, search for items that cost less than this price
 const sorting = document.querySelector('#sort-select')
 
 /**
@@ -28,14 +29,29 @@ const setCurrentProducts = ({ result, meta }) => {
   currentPagination = meta;
 };
 
-
+const queryFormation = async(price, brand, limit) => {
+  let query = `https://server-fawn-mu.vercel.app/products/search?`;
+  if(price != undefined ){
+    query = `${query}&price=${price}`;
+  }
+  if(brand != undefined){
+    query = `${query}&brand=${brand}`;
+  }
+  if(limit != undefined){
+    query = `${query}&limit=${limit}`;
+  }
+  return query;
+}
+ console.log('TEST QUERY FORMATION',queryFormation(135,'MONTLIMART',12));
 /**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (price, brand, limit = totalProducts) => {
+  
+  
   try {
     const response = await fetch(
       `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`

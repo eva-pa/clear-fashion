@@ -26,42 +26,44 @@ app.get('/products/search', async (request, response) => {
   let price = request.query.price;
   let brand = request.query.brand;
   let limit = request.query.limit;
+  let sorting = request.query.sorting;
 
+  if(sorting == undefined){sorting = 1;}; // if the sorting is not defined, we return the products with ascending prices.
   // IFs
   // I am not going to create a function inside db/index.js for each case
   // so I will just the basic find function or the aggregate function
   if (price == undefined && brand == undefined && limit == undefined) {
     // Just return all products.
     //db.find().then(x => response.send(x));
-    db.aggregate([{ '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+    db.aggregate([{ '$sort': { 'price': parseInt(sorting) } }]).then(x => response.send({'total':x.length,'result': x}));
 
   };
   if (price == undefined && brand == undefined && limit != undefined) {
     //db.aggregate([{'$limit': parseInt(limit) }]).then(x => response.send(x));
-    db.aggregate([{ '$limit': parseInt(limit) }]).then(x => response.send({ 'limit': parseInt(limit), 'total': x.length, 'result': x }));
+    db.aggregate([{ '$limit': parseInt(limit) },{ '$sort': { 'price': parseInt(sorting) } }]).then(x => response.send({ 'limit': parseInt(limit), 'total': x.length, 'result': x }));
   };
   if (price == undefined && brand != undefined && limit == undefined) {
     //db.findByBrand(brand).then(x => response.send(x));
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }]}},{'$sort': { "price": 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }]}},{'$sort': { "price": parseInt(sorting) } }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price == undefined && brand != undefined && limit != undefined) {
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }]}}, { "$limit": parseInt(limit) }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }]}}, { "$limit": parseInt(limit) },{ '$sort': { 'price': parseInt(sorting)} }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
   };
   if (price != undefined && brand == undefined && limit == undefined) {
     //db.findLessPrice(parseFloat(price)).then(x => response.send(x));
-    db.aggregate([{ '$match': { '$and': [{ 'price':{'$lte':parseFloat(price)} }]}}, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+    db.aggregate([{ '$match': { '$and': [{ 'price':{'$lte':parseFloat(price)} }]}}, { '$sort': { 'price': parseInt(sorting) } }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price != undefined && brand == undefined && limit != undefined) {
-    db.aggregate([{ '$match': { '$and': [{ 'price':{'$lte':parseFloat(price)} }]}}, { "$limit": parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
+    db.aggregate([{ '$match': { '$and': [{ 'price':{'$lte':parseFloat(price)} }]}}, { "$limit": parseInt(limit) }, { '$sort': { 'price': parseInt(sorting) } }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
   };
   if (price != undefined && brand != undefined && limit == undefined) {
     //db.findByBrand(brand).then(x => response.send(x));
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$sort': { 'price': parseInt(sorting)} }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price != undefined && brand != undefined && limit != undefined) {
     console.log('enter');
     //db.aggregate([{ "brand": brand }, { "price": parseFloat(price) }, { "$limit": parseInt(limit) }]);
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': parseInt(sorting)} }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
 
   };
 }
