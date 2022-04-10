@@ -29,9 +29,8 @@ const selectSorting = document.querySelector('#sort-select')
  * @param {Array} result - products to display
  * @param {Object} meta - pagination meta info
  */
-const setCurrentProducts = ({ result, meta }) => {
-  currentProducts = result;
-  currentPagination = meta;
+const setCurrentProducts = (products) => {
+ currentProducts = products;
 };
 
 var queryFormation = (limit,price,brand,sorting) => {
@@ -134,10 +133,11 @@ const fetchBrands = async (page = 1, size = 139) => {
 const renderProducts = products => {
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
+  console.log(products);
   const template = products
     .map(product => {
       return `
-      <div class="product" id=${product.uuid}>
+      <div class="product" id=${product._id}>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
@@ -282,9 +282,11 @@ const renderBrand = brands => {
 
 /**
  * Select the number of products to display
+ * 
+ * the limit variable in our case
  */
 selectShow.addEventListener('change', async (event) => {
-  const products = await fetchProducts(currentPagination.currentPage, parseInt(event.target.value));
+  const products = await fetchProducts(parseInt(event.target.value),price,brand,sorting);
 
   setCurrentProducts(products);
 
@@ -292,20 +294,29 @@ selectShow.addEventListener('change', async (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const products = await fetchProducts();
+  const products = await fetchProducts(limit,price,brand,sorting);
+  console.log("111111");
+  console.log('2222', products);
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
 
 // Feature 1:
 selectPage.addEventListener('change', async (event) => {
-  const products = await fetchProducts(parseInt(event.target.value), currentProducts.length);
+  limit = parseInt(event.target.value);
+  const products = await fetchProducts(limit, currentProducts.length);
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
 
 // Feature 2:
+selectBrand.addEventListener('change', async(event)=>{
+  const products = await fetchProducts(limit);
+})
+
+
+
 /*
 selectBrand.addEventListener('change', async (event) => {
   productsBrand = []
