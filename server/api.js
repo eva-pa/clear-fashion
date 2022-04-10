@@ -56,13 +56,13 @@ app.get('/products/search', async (request, response) => {
   };
   if (price != undefined && brand != undefined && limit == undefined) {
     //db.findByBrand(brand).then(x => response.send(x));
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}))
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$sort': { 'price': 1 } }]).then(x => response.send({'total':x.length,'result': x}));
   };
   if (price != undefined && brand != undefined && limit != undefined) {
     console.log('enter');
     //db.aggregate([{ "brand": brand }, { "price": parseFloat(price) }, { "$limit": parseInt(limit) }]);
-    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}))
-    console.log('eva');
+    db.aggregate([{ '$match': { '$and': [{ 'brand': brand }, { 'price': { '$lte': parseFloat(price) } }] } }, { '$limit': parseInt(limit) }, { '$sort': { 'price': 1 } }]).then(x => response.send({'limit':parseInt(limit),'total':x.length,'result':x}));
+
   };
 }
 );
@@ -88,7 +88,7 @@ app.get('/products', async (request, response) => {
 
 
 
-console.log("TEST")
+//console.log("TEST")
 //db.find({"brand":"MONTLIMART","$limit":10}).then(response=>console.log(response));
 //db.aggregate([{"brand":"MONTLIMART","$limit":10}]).then(response => console.log(response))
 //db.find().then(response => console.log(response));
@@ -100,7 +100,7 @@ console.log("TEST")
 //db.aggregate([{ "brand": "MONTLIMART" }, { "price": parseFloat(135) }, { "$limit": parseInt(12) }]).then(response => console.log(response));
 
 //db.aggregate([{'$match':{'$and':[{'brand':brand},{'price':{'$lte':parseFloat(price)}}]}},{'$limit':parseInt(limit)},{'$sort':{'price':1}}])
-console.log('fin')
+//console.log('fin')
 
 
 app.listen(PORT);

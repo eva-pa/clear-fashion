@@ -15,6 +15,8 @@
         <option value="12">12</option>
         <option value="24">24</option>
         <option value="48">48</option>
+        <option value="96">96</option>
+        <option value="192">192</option>
       </select>
     </div>
     <div id="page">
@@ -26,8 +28,12 @@
       <span>By recently released</span>
       <div id="brand">
         <label for="brand-select">By brands:</label>
-        <select name="brand" id="brand-select"> </select>
-        <!--select class="list-group-item active" name="brand" id="brand-select"> </select> -->
+        <select name="brand" id="brand-select" > 
+        <option value="none">none</option>
+        <option value="adresseparis">Adresse Paris</option>
+        <option value="montlimart">Montlimart</option>
+        <option value="dedicated">dedicated</option>
+      </select>
       </div>
     </div>
     <div id="sort">
@@ -38,6 +44,10 @@
         <option value="date-asc">Recently released</option>
         <option value="date-desc">Anciently released</option>
       </select>
+    </div>
+    <div id="less than choosen price">
+      <label for="lessThanPrice">Less than price:</label>
+      <input type ="text" id="submitPrice">
     </div>
   </section>
   <section id="indicators">

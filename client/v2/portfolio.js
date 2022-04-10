@@ -4,7 +4,7 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
-let currentBrand = 'option brand';
+//let currentBrand = 'option brand';
 //let currentBrands =[];
 //let productsExtract = fetchProducts(currentPagination, 139);
 
@@ -15,7 +15,8 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select'); //test feature 2
-
+const lessThanPrice = document.querySelector('#submitPrice')
+const sorting = document.querySelector('#sort-select')
 
 /**
  * Set global value
