@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Feature 1:
 selectPage.addEventListener('change', async (event) => {
-  limit = parseInt(event.target.value);
+  limit = parseInt(event.target.value); // changes the variable globally or do i have to create setcurrent etc...?
   const products = await fetchProducts(limit, currentProducts.length);
 
   setCurrentProducts(products);
@@ -312,7 +312,13 @@ selectPage.addEventListener('change', async (event) => {
 
 // Feature 2:
 selectBrand.addEventListener('change', async(event)=>{
-  const products = await fetchProducts(limit);
+  brand = event.target.value; 
+  if(brand == 'montlimart'){
+    brand = 'MONTLIMART';
+  };
+  const products = await fetchProducts(limit,price,brand,sorting);
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination);
 })
 
 
