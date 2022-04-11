@@ -321,6 +321,14 @@ selectBrand.addEventListener('change', async(event)=>{
   render(currentProducts,currentPagination);
 })
 
+// Filter by price (Ascending= Cheaper) (Descending = Expensive)
+selectSorting.addEventListener('change', async(event)=>{
+  sorting = event.target.value;
+  const products = await fetchProducts(limit,price,brand,sorting);
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination);
+
+});
 
 
 /*
