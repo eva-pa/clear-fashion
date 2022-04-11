@@ -330,6 +330,14 @@ selectSorting.addEventListener('change', async(event)=>{
 
 });
 
+// Give products with prince inferior to input value by user
+lessThanPrice.addEventListener('change', async(event)=>{
+  price = event.target.value;
+  sorting = 1; // users can change the sort after using this functionality if they want the result to be sorted
+  const products = await fetchProducts(limit,price,brand,sorting);
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination);
+})
 
 /*
 selectBrand.addEventListener('change', async (event) => {
