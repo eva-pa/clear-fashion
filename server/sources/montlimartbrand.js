@@ -31,7 +31,7 @@ const parse = data => {
 const parse = data => {
   const $ = cheerio.load(data);
 
-  return $('.products-grid .product-info')
+  return $('.category-products .item')
     .map((i, element) => {
       const link = $(element)
         .find('a')
@@ -46,10 +46,15 @@ const parse = data => {
           .find('.regular-price')
           .text());
       const photo = $(element)
-      .find();
-      
+        .find('img').attr('src');
+      console.log(photo)
+        //.attr('href')
+        //.children('img')
+        //.attr('src');
+        //a.find('.container_c89a5').children('img').eq(0).attr('src');
+       // (' .product-image')[0].children[1].attribs.href
       // added brand bc products were mixed up in the mongo db
-      return {link,"brand":"MONTLIMART",name, price};
+      return { link, "brand": "MONTLIMART", name, price, photo };
     })
     .get();
 };
