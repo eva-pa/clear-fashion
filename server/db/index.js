@@ -107,6 +107,7 @@ module.exports.findByBrand = async brand => {
     return null;
   }
 };
+
 // Creating 3 methods that :
 // Find all products related to a given brands
 // Find all products less than a price

@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
  * @param  {String} data - html response
  * @return {Array} products
  */
+/*
 const parse = data => {
   const $ = cheerio.load(data);
 
@@ -26,7 +27,32 @@ const parse = data => {
     })
     .get();
 };
+*/
+const parse = data => {
+  const $ = cheerio.load(data);
 
+  return $('.products-grid .product-info')
+    .map((i, element) => {
+      const link = $(element)
+        .find('a')
+        .attr('href')
+      const name = $(element)
+        .find('.product-name')
+        .text()
+        .trim()
+        .replace(/\s/g, ' ');
+      const price = parseInt(
+        $(element)
+          .find('.regular-price')
+          .text());
+      const photo = $(element)
+      .find();
+      
+      // added brand bc products were mixed up in the mongo db
+      return {link,"brand":"MONTLIMART",name, price};
+    })
+    .get();
+};
 /**
  * Scrape all the products for a given url page
  * @param  {[type]}  url
