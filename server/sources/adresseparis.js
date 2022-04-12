@@ -6,11 +6,14 @@ const cheerio = require('cheerio');
  * @param  {String} data - html response
  * @return {Array} products
  */
+/*
 const parse = data => {
   const $ = cheerio.load(data);
 
   return $('.product_list .product-container')
     .map((i, element) => {
+  
+
       const name = $(element)
         .find('.product-name')
         .text()
@@ -22,6 +25,30 @@ const parse = data => {
           .text()
       );
       return {"brand":"ADRESSEPARIS",name, price};
+    })
+    .get();
+};
+*/
+const parse = data => {
+  const $ = cheerio.load(data);
+
+  return $('.product_list .product-container')
+    .map((i, element) => {
+      const link = $(element).find('a').attr('href');
+
+      const name = $(element)
+        .find('.product-name')
+        .text()
+        .trim()
+        .replace(/\s/g, ' ');
+      const price = parseInt(
+        $(element)
+          .find('.product-price')
+          .text()
+      );
+      const photo = $(element).find('a img.replace-2x.lazy.img_0').attr('data-original');
+
+      return { link, "brand": "ADRESSEPARIS", name, price, photo };
     })
     .get();
 };
