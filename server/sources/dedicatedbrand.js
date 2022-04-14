@@ -11,9 +11,9 @@ const parse = data => {
 
   return $('.productList-container .productList')
     .map((i, element) => {
-      const link = `https://www.dedicatedbrand.com`+$(element)
-      .find('.productList-link')
-      .attr('href');
+      const link = `https://www.dedicatedbrand.com` + $(element)
+        .find('.productList-link')
+        .attr('href');
       const name = $(element)
         .find('.productList-title')
         .text()
@@ -23,10 +23,10 @@ const parse = data => {
         $(element)
           .find('.productList-price')
           .text()
-          
+
       );
       const photo = $(element).find('.productList-image img').attr('data-src');
-      return {link,"brand":"DEDICATED BRAND",name, price,photo};
+      return { link, "brand": "DEDICATED", name, price, photo };
 
     })
     .get();

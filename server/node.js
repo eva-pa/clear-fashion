@@ -10,8 +10,9 @@ db.getDB()
 db.insert(montlimart)
 db.insert(dedicatedbrand)
 db.insert(adresseparis)
+*/
 // commented this part since i dont wanna insert the same products multiple times
-*/ 
+
 
 // Testing the 3 methods :
 // Find by brand
