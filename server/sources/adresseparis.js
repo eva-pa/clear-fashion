@@ -40,7 +40,7 @@ const parse = data => {
         .find('.product-name')
         .text()
         .trim()
-        .replace(/\s/g, ' ');
+        .replace(/\s/g, ' ').split("  ")[0];
       const price = parseInt(
         $(element)
           .find('.product-price')
