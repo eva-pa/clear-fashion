@@ -46,7 +46,7 @@ const parse = data => {
           .find('.regular-price')
           .text());
       const photo = $(element)
-        .find('img').attr('src');
+        .find('img').attr('src')
       console.log(photo)
         //.attr('href')
         //.children('img')

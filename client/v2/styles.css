@@ -1,0 +1,21 @@
+body {
+    color:#414141;    /* Dark gray */
+    background-color: #EEEEEE;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 60px;
+    padding-left: 150px;  
+    padding-top: 0px;
+    margin-top: 0cm;
+    background-color: rgb(112, 191, 255);
+    background-size: 1500px;
+
+}
+#options{
+    padding-left:60px;
+}
+#title_filters{font-family: Arial, Helvetica, sans-serif;
+    font-size: 60px;}

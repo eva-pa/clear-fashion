@@ -35,6 +35,7 @@ const setCurrentProducts = (products) => {
 
 var queryFormation = (limit,price,brand,sorting) => {
   let query = `https://server-fawn-mu.vercel.app/products/search?`;
+  if(brand == ""){brand=undefined};
   if (price != undefined) {
     query = `${query}&price=${price}`;
   }
@@ -137,10 +138,14 @@ const renderProducts = products => {
   const template = products
     .map(product => {
       return `
-      <div class="product" id=${product._id}>
+      <div class="product" id=${product._id}>    
+          <span style="padding-right:3px; padding-top: 3px; display:block;">
+        <img class="manImg" src=${product.photo}></img>
+      </span>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
-        <span>${product.price}</span>
+        <span>${product.price}€</span>
+
       </div>
     `;
     })

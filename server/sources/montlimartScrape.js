@@ -6,9 +6,11 @@ async function obtainMonlimartProd(eshop = 'https://www.montlimart.com/toute-la-
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
-    const products = await montlimartbrand.scrape(eshop);
+    let products = await montlimartbrand.scrape(eshop);
 
     console.log(products);
+
+
     // Put Montlimart products in json file:   
     var fs = require('fs');
     //var productsMontlimart =JSON.stringify(products);

@@ -4,6 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>👕 Clear Fahion | Environmentally & human-friendly clothes</title>
+  <link rel='stylesheet' href='styles.css'/>
 </head>
 
 <body>
@@ -24,12 +25,11 @@
       <select name="page" id="page-select"> </select>
     </div>
     <div id="filters">
-      <span>By reasonable price</span>
-      <span>By recently released</span>
+      <span id="title_filters">Filters</span>
       <div id="brand">
         <label for="brand-select">By brands:</label>
         <select name="brand" id="brand-select" > 
-        <option value="none">none</option>
+        <option value=none>none</option>
         <option value="ADRESSEPARIS">Adresse Paris</option>
         <option value="MONTLIMART">Montlimart</option>
         <option value="DEDICATED">dedicated</option>
@@ -38,6 +38,7 @@
     </div>
     <div id="sort">
       <label for="sort-select">Sort:</label>
+      <span>By reasonable price</span>
       <select name="sort" id="sort-select">
         <option value="1">Cheaper</option>
         <option value="-1">Expensive</option>
