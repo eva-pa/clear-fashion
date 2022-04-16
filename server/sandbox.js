@@ -1,4 +1,5 @@
 /* eslint-disable no-console, no-process-exit */
+/*
 const dedicatedbrand = require('./sources/dedicatedbrand');
 
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
@@ -19,3 +20,4 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
 const [,, eshop] = process.argv;
 
 sandbox(eshop);
+*/
