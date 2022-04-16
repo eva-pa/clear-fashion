@@ -21,8 +21,9 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select'); //test feature 2
-const lessThanPrice = document.querySelector('#submitPrice') // price entered by user, search for items that cost less than this price
-const selectSorting = document.querySelector('#sort-select')
+const lessThanPrice = document.querySelector('#submitPrice');// price entered by user, search for items that cost less than this price
+const selectSorting = document.querySelector('#sort-select');
+const resetParam= document.querySelector('#reset-param');
 
 /**
  * Set global value
@@ -349,6 +350,17 @@ lessThanPrice.addEventListener('change', async(event)=>{
   render(currentProducts,currentPagination);
 })
 
+// Reset parameters :
+resetParam.addEventListener('click',async(event)=>{
+  let price;
+  let sorting = 1;
+  let limit = 12;
+  let brand ;
+  console.log('reset')
+  const products = await fetchProducts(limit,price,brand,sorting);
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination);
+})
 /*
 selectBrand.addEventListener('change', async (event) => {
   productsBrand = []

@@ -48,12 +48,6 @@ const parse = data => {
       const photo = $(element)
         .find('img').attr('src')
       console.log(photo)
-        //.attr('href')
-        //.children('img')
-        //.attr('src');
-        //a.find('.container_c89a5').children('img').eq(0).attr('src');
-       // (' .product-image')[0].children[1].attribs.href
-      // added brand bc products were mixed up in the mongo db
       return { link, "brand": "MONTLIMART", name, price, photo };
     })
     .get();
