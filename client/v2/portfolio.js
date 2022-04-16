@@ -140,7 +140,7 @@ const renderProducts = products => {
       return `
       <div class="product" id=${product._id}>    
           <span style="padding-right:3px; padding-top: 3px; display:block;">
-        <img class="manImg" src=${product.photo}></img>
+        <img class="photoDB" src=${product.photo}></img>
       </span>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>

@@ -1,6 +1,6 @@
 body {
-    color:#414141;    /* Dark gray */
-    background-color: #EEEEEE;
+    color:#555d59;    /* Dark gray */
+    background-color: #f9dcc4;
     font-family: Arial, Helvetica, sans-serif;
   }
 
@@ -9,10 +9,16 @@ h1{
     font-size: 60px;
     padding-left: 150px;  
     padding-top: 0px;
-    margin-top: 0cm;
-    background-color: rgb(112, 191, 255);
+    padding-bottom
+    padding : ;
+    background-color: #ffb5a7;
     background-size: 1500px;
+    border-radius: 90px;
+    border-width: 5px #e8a598;
 
+}
+h2{
+    font-size: 70px;
 }
 
 #options{
@@ -24,7 +30,8 @@ h1{
 #products{
     font-family:Arial, Helvetica, sans-serif;
     width: 1000px;
-    padding-left: 100px;
+    padding-left: 170px;
+    margin-block-end: 180px;
 
 
     /*padding: 10px;
@@ -34,6 +41,7 @@ h1{
 
     
     border: 5px solid gray;
+    border-radius: 90px;
     margin-left: 200px;
 }
 #product{
