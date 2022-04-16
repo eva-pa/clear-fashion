@@ -24,6 +24,9 @@ const selectBrand = document.querySelector('#brand-select'); //test feature 2
 const lessThanPrice = document.querySelector('#submitPrice');// price entered by user, search for items that cost less than this price
 const selectSorting = document.querySelector('#sort-select');
 const resetParam= document.querySelector('#reset-param');
+const p50 = document.querySelector("#p50");
+const p90 = document.querySelector("#p90");
+const p95 = document.querySelector("#p95");
 
 /**
  * Set global value
@@ -158,6 +161,21 @@ const renderProducts = products => {
   sectionProducts.appendChild(fragment);
 };
 
+const renderIndicators = async() => {
+  //const { count } = pagination;
+  let limit;
+  let price;
+  let brand;
+  const products_temp = await fetchProducts(limit,price,brand,1);
+  const p50_calc=products_temp[parseInt(products_temp.length*0.5)].price ;
+  console.log('mediane',parseInt(products_temp.length*0.5))
+  const p90_calc=products_temp[parseInt(products_temp.length*0.9)].price ;
+  const p95_calc=products_temp[parseInt(products_temp.length*0.95)].price ;
+  spanNbProducts.innerHTML = products_temp.length //products_temp.total; total was in db but did not work out even though when requesting api manually it appeared
+  p50.innerHTML = p50_calc;
+  p90.innerHTML = p90_calc;
+  p95.innerHTML = p95_calc;
+};
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -173,14 +191,6 @@ const renderPagination = pagination => {
   selectPage.selectedIndex = currentPage - 1;
 };
 
-/**
- * Render page selector
- * @param  {Object} pagination
- */
-const renderIndicators = pagination => {
-  const { count } = pagination;
-  spanNbProducts.innerHTML = count;
-};
 
 const render = (products, pagination) => {
   renderProducts(products);
@@ -189,6 +199,12 @@ const render = (products, pagination) => {
  // brands = fetchBrands();
   //renderBrand(brands); 
 };
+
+
+/**
+ * Render page selector
+ * @param  {Object} pagination
+ */
 
 // function to have distinct brand names in array 
 
@@ -403,4 +419,5 @@ selectBrand.addEventListener('change', async (event) => {
 */
 
 //Feature 3: Filter by recent products
+
 
