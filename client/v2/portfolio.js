@@ -35,7 +35,7 @@ const setCurrentProducts = (products) => {
 
 var queryFormation = (limit,price,brand,sorting) => {
   let query = `https://server-fawn-mu.vercel.app/products/search?`;
-  if(brand == ""){brand=undefined};
+  
   if (price != undefined) {
     query = `${query}&price=${price}`;
   }
@@ -317,9 +317,14 @@ selectPage.addEventListener('change', async (event) => {
 
 // Feature 2:
 selectBrand.addEventListener('change', async(event)=>{
-  brand = event.target.value; 
-  if(brand == 'montlimart'){
-    brand = 'MONTLIMART';
+ let  brand_value = event.target.value; 
+  if(brand_value == 'none'){
+    //brand = 'MONTLIMART';
+    console.log('BRAND IS UNDEFINED');
+    let brand;
+  }
+  else{
+    brand = brand_value;
   };
   const products = await fetchProducts(limit,price,brand,sorting);
   setCurrentProducts(products);

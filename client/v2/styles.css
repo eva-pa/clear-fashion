@@ -14,8 +14,28 @@ h1{
     background-size: 1500px;
 
 }
+
 #options{
     padding-left:60px;
 }
 #title_filters{font-family: Arial, Helvetica, sans-serif;
     font-size: 60px;}
+
+#products{
+    font-family:Arial, Helvetica, sans-serif;
+    width: 1000px;
+    padding-left: 100px;
+
+
+    /*padding: 10px;
+    padding-left: 450px;
+*/
+
+
+    
+    border: 5px solid gray;
+    margin-left: 200px;
+}
+#product{
+    padding-left: 200px;
+}
